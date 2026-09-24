@@ -40,7 +40,7 @@ String getMove(String player) {
     validMove = validateMove(input);
 
     if (validMove == null) {
-      print('Invalid Move. Please enter (rock/paper/scissors).');
+      print('Invalid Move. Please type rock, paper, or scissors.');
     }
   } while (validMove == null);
   return validMove;
@@ -72,6 +72,9 @@ void main() {
   String playerOne = getPlayerName('Player 1');
   String playerTwo = getPlayerName('Player 2');
 
+  int playerOneScore = 0;
+  int playerTwoScore = 0;
+
   int roundNumber = 1;
 
   String? playAgain;
@@ -81,7 +84,38 @@ void main() {
     blankSpace();
     String playerTwoMove = getMove(playerTwo);
 
-    print('$playerOne chose $playerOneMove. $playerTwo chose $playerTwoMove.');
+    print('\n$playerOne chose $playerOneMove. $playerTwo chose $playerTwoMove.');
+    String? winner = decideWinner(playerOneMove, playerTwoMove);
 
-  } while (playAgain == 'n');
+    if (winner == 'Player 1') {
+      playerOneScore++;
+    } else if (winner == 'Player 2') {
+      playerTwoScore++;
+    }
+
+    if (winner == null) {
+      print('Result: ${winner ?? "It\'s a draw!"}');
+    } else if (winner == 'Player 1') {
+      print('Result: $playerOne wins the round!');
+    } else {
+      print('Result: $playerTwo wins the round!');
+    }
+    print('Score -> $playerOne: $playerOneScore | $playerTwo: $playerTwoScore');
+
+    stdout.write('\nPlay again? (y/n): ');
+    String? input = stdin.readLineSync();
+    playAgain = (input ?? '').trim().toLowerCase();
+
+    roundNumber++;
+  } while (playAgain != 'n');
+  print('\n==== Final Score ====');
+  print('$playerOne: $playerOneScore | $playerTwo: $playerTwoScore');
+
+  if (playerOneScore > playerTwoScore) {
+    print('Overall winner: $playerOne');
+  } else if (playerTwoScore > playerOneScore) {
+    print('Overall winner: $playerTwo');
+  } else {
+    print("It\'s a draw!");
+  }
 }
