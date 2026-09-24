@@ -26,6 +26,7 @@ String? validateMove(String? playerMove) {
   if (validMoves.contains(move)) {
     return move;
   }
+  return null;
 }
 
 /// This function asks for the players move
@@ -45,9 +46,42 @@ String getMove(String player) {
   return validMove;
 }
 
-void main() {
+/// This function prints 30 blank lines to hide player one's move
+void blankSpace() {
+  for (int i = 1; i < 30; i++) {
+    print('');
+  }
+}
 
+/// This function decides which player won
+String? decideWinner(String playerOne, String playerTwo) {
+  if (playerOne == playerTwo) {
+    return null;
+  }
+
+  if ((playerOne == 'rock' && playerTwo == 'scissors') ||
+      (playerOne == 'paper' && playerTwo == 'rock') ||
+      (playerOne == 'scissors' && playerTwo == 'paper')) {
+    return 'Player 1';
+  }
+  return 'Player 2';
+}
+
+void main() {
   print('==== ROCK, PAPER, SCISSORS ====');
   String playerOne = getPlayerName('Player 1');
   String playerTwo = getPlayerName('Player 2');
+
+  int roundNumber = 1;
+
+  String? playAgain;
+  do {
+    print('\n--- Round $roundNumber---');
+    String playerOneMove = getMove(playerOne);
+    blankSpace();
+    String playerTwoMove = getMove(playerTwo);
+
+    print('$playerOne chose $playerOneMove. $playerTwo chose $playerTwoMove.');
+
+  } while (playAgain == 'n');
 }
